@@ -43,7 +43,6 @@ public class LegendGroupActivity extends AppCompatActivity {
                 String groupName = mListGroup.get(position).getName();
                 Log.d("TEST", "onCreate: "+groupName);
                 Intent intent = new Intent(getApplicationContext(), LegendActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Bundle b = new Bundle();
                 b.putString("GROUP_NAME", groupName);
                 intent.putExtras(b);

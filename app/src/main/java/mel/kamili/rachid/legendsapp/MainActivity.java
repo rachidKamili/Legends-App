@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToGroupLegendActivity(View view) {
         Intent intent = new Intent(getApplicationContext(),LegendGroupActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }

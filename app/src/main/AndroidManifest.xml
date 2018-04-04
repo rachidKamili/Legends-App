@@ -21,6 +21,7 @@
         </activity>
         <activity android:name=".LegendGroupActivity" />
         <activity android:name=".LegendActivity" />
+        <activity android:name=".LegendDetailsActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,8 @@
 package mel.kamili.rachid.legendsapp.model;
 
-public class Legend {
+import java.io.Serializable;
+
+public class Legend  implements Serializable{
     private String name;
     private int tier;
     private String slogan;
