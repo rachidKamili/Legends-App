@@ -179,4 +179,12 @@ public class LegendsFactory {
         return legendMap;
     }
 
+    public static List<Legend> getLegendsByGroupName(String categoryName){
+        for( Map.Entry<LegendGroup,List<Legend>> entry : LegendsFactory.createLegends().entrySet()){
+            if( entry.getKey().getName().equals(categoryName))
+                return entry.getValue();
+        }
+        return null;
+    }
+
 }

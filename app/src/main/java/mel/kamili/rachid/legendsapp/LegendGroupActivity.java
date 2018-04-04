@@ -1,7 +1,12 @@
 package mel.kamili.rachid.legendsapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -16,6 +21,7 @@ public class LegendGroupActivity extends AppCompatActivity {
 
     private ListView mListViewLegendGroup;
     private LegendGroupAdapter mAdapter;
+    private List<LegendGroup> mListGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +33,24 @@ public class LegendGroupActivity extends AppCompatActivity {
 
     private void bindListView() {
         mListViewLegendGroup = findViewById(R.id.listViewLegendGroup);
-        List<LegendGroup> listGroup = new ArrayList<>(LegendsFactory.createLegends().keySet());
-        mAdapter = new LegendGroupAdapter(this, R.layout.legend_group_item_left,listGroup);
+        mListGroup = new ArrayList<>(LegendsFactory.createLegends().keySet());
+        mAdapter = new LegendGroupAdapter(this, R.layout.legend_group_item_left, mListGroup);
         mListViewLegendGroup.setAdapter(mAdapter);
+        final Context context = this;
+        mListViewLegendGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String groupName = mListGroup.get(position).getName();
+                Log.d("TEST", "onCreate: "+groupName);
+                Intent intent = new Intent(getApplicationContext(), LegendActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Bundle b = new Bundle();
+                b.putString("GROUP_NAME", groupName);
+                intent.putExtras(b);
+                startActivity(intent);
+                finish();
+            }
 
+        });
     }
 }
