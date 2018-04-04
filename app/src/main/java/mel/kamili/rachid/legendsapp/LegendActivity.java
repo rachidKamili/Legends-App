@@ -1,5 +1,6 @@
 package mel.kamili.rachid.legendsapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +39,12 @@ public class LegendActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new LegendAdapter(mLegends);
+        mAdapter = new LegendAdapter(mLegends, new LegendAdapter.OnLegendClickListener() {
+            @Override
+            public void onItemClick(Legend item) {
+                System.out.println(item.getName());
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((ItemTouchHelperAdapter) mAdapter);

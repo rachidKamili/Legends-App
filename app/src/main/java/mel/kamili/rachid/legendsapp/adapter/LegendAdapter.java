@@ -25,10 +25,13 @@ public class LegendAdapter extends RecyclerView.Adapter<LegendAdapter.ViewHolder
     private static final int GOD_TIER = 0;
     private static final int STRONG_TIER = 1;
     private static final int AVERAGE_TIER = 2;
-    private List<Legend> mDataset;
 
-    public LegendAdapter(List<Legend> dataset) {
+    private List<Legend> mDataset;
+    private final OnLegendClickListener listener;
+
+    public LegendAdapter(List<Legend> dataset, OnLegendClickListener l) {
         mDataset = dataset;
+        listener = l;
     }
 
     @NonNull
@@ -61,22 +64,11 @@ public class LegendAdapter extends RecyclerView.Adapter<LegendAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull final LegendAdapter.ViewHolder holder, int position) {
 
-        holder.mLegendName.setText(mDataset.get(position).getName());
-        holder.mLegendSlogan.setText(mDataset.get(position).getSlogan());
-        Picasso.get().load(mDataset.get(position).getLogo()).into(holder.mLogo);
+        holder.bind(mDataset.get(position), listener);
 
         switch (holder.getItemViewType()) {
             case GOD_TIER:
-                ((GodViewHolder) holder).mLegendDescription.setText(mDataset.get(position).getDescription());
-                ((GodViewHolder) holder).mShowDescBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if ( ((GodViewHolder) holder).mLegendDescription.getVisibility() == View.VISIBLE )
-                            ((GodViewHolder) holder).mLegendDescription.setVisibility(View.GONE);
-                        else
-                            ((GodViewHolder) holder).mLegendDescription.setVisibility(View.VISIBLE);
-                    }
-                });
+                ((GodViewHolder) holder).bind(mDataset.get(position), listener);
                 break;
             case STRONG_TIER:
                 System.out.println("Strong");
@@ -120,6 +112,19 @@ public class LegendAdapter extends RecyclerView.Adapter<LegendAdapter.ViewHolder
 
         }
 
+        public void bind(final Legend item, final OnLegendClickListener listener) {
+
+            mLegendName.setText(item.getName());
+            mLegendSlogan.setText(item.getSlogan());
+            Picasso.get().load(item.getLogo()).into(mLogo);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
+        }
+
         @Override
         public void onItemSelected() {
             itemView.setScaleX(1.15f);
@@ -145,6 +150,26 @@ public class LegendAdapter extends RecyclerView.Adapter<LegendAdapter.ViewHolder
             mLegendDescription = itemView.findViewById(R.id.legendDescription);
             mShowDescBtn = itemView.findViewById(R.id.showDescBtn);
         }
+
+        @Override
+        public void bind(final Legend item, final OnLegendClickListener listener) {
+            super.bind(item,listener);
+            mLegendDescription.setText(item.getDescription());
+            mShowDescBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if ( mLegendDescription.getVisibility() == View.VISIBLE )
+                        mLegendDescription.setVisibility(View.GONE);
+                    else
+                        mLegendDescription.setVisibility(View.VISIBLE);
+                }
+            });
+
+        }
+    }
+
+    public interface OnLegendClickListener {
+        void onItemClick(Legend item);
     }
 
 
