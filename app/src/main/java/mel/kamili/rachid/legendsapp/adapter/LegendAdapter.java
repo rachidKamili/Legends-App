@@ -1,5 +1,6 @@
 package mel.kamili.rachid.legendsapp.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,12 +12,15 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Collections;
 import java.util.List;
 
 import mel.kamili.rachid.legendsapp.R;
+import mel.kamili.rachid.legendsapp.helper.ItemTouchHelperAdapter;
+import mel.kamili.rachid.legendsapp.helper.ItemTouchHelperViewHolder;
 import mel.kamili.rachid.legendsapp.model.Legend;
 
-public class LegendAdapter extends RecyclerView.Adapter<LegendAdapter.ViewHolder> {
+public class LegendAdapter extends RecyclerView.Adapter<LegendAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     private static final int GOD_TIER = 0;
     private static final int STRONG_TIER = 1;
@@ -89,7 +93,21 @@ public class LegendAdapter extends RecyclerView.Adapter<LegendAdapter.ViewHolder
         return mDataset.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        Legend prev = mDataset.remove(fromPosition);
+        mDataset.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder  implements
+            ItemTouchHelperViewHolder {
         TextView mLegendName;
         TextView mLegendSlogan;
         ImageView mLogo;
@@ -100,6 +118,20 @@ public class LegendAdapter extends RecyclerView.Adapter<LegendAdapter.ViewHolder
             mLegendSlogan = itemView.findViewById(R.id.legendSlogan);
             mLogo = itemView.findViewById(R.id.legendLogo);
 
+        }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setScaleX(1.15f);
+            itemView.setScaleY(1.15f);
+            //itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setScaleX(1.f);
+            itemView.setScaleY(1.f);
+            //itemView.setBackgroundColor(0);
         }
     }
 
