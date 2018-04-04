@@ -42,7 +42,12 @@ public class LegendActivity extends AppCompatActivity {
         mAdapter = new LegendAdapter(mLegends, new LegendAdapter.OnLegendClickListener() {
             @Override
             public void onItemClick(Legend item) {
-                System.out.println(item.getName());
+                Intent intent = new Intent(getApplicationContext(),LegendDetailsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Bundle b = new Bundle();
+                b.putSerializable("LEGEND_OBJECT", item);
+                intent.putExtras(b);
+                startActivity(intent);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
